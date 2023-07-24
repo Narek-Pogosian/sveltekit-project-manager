@@ -1,0 +1,41 @@
+/* Write your global styles here, in PostCSS syntax */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-sans: "Open Sans", sans-serif;
+  --font-lobster: "Lobster", monospace;
+}
+
+.dark {
+  color-scheme: dark;
+}
+
+body {
+  @apply bg-slate-50 dark:bg-[#1f2733] text-slate-800 dark:text-slate-50;
+}
+
+#date-input::-webkit-calendar-picker-indicator {
+  padding-block: 10px;
+  padding-left: 400px;
+  cursor: pointer;
+}
+
+@layer base {
+  @font-face {
+    font-family: "Lobster";
+    src: local("Lobster"), local("Lobster"), local("lobster"), local("lobster"),
+      url("/fonts/Lobster/Lobster-Regular.ttf");
+    font-weight: normal;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: "Open Sans";
+    src: local("Open Sans"), local("Open Sans"),
+      url("/fonts/Open-Sans/OpenSans-Medium.ttf");
+    font-weight: normal;
+    font-display: swap;
+  }
+}

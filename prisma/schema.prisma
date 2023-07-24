@@ -1,0 +1,59 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id              String    @id @default(auto()) @map("_id") @db.ObjectId
+  name            String
+  email           String    @unique
+  hashedPassword  String
+  userAuthToken   String    @unique
+  createdProjects Project[] @relation("CreatedBy")
+  // comments        Comment[]
+  createdAt       DateTime  @default(now())
+  tasks           Task[]
+}
+
+model Project {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  title     String
+  tasks     Task[]
+  creatorId String   @db.ObjectId
+  Creator   User     @relation("CreatedBy", fields: [creatorId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+}
+
+model Task {
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  title       String
+  description String
+  status      Status?   @default(TODO)
+  // comments    Comment[]
+  Project     Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  projectId   String    @db.ObjectId
+  expiresAt   DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  User        User      @relation(fields: [userId], references: [id])
+  userId      String    @db.ObjectId
+}
+
+// model Comment {
+//   id        String   @id @default(auto()) @map("_id") @db.ObjectId
+//   Task      Task     @relation(fields: [taskId], references: [id])
+//   taskId    String   @db.ObjectId
+//   userId    String   @db.ObjectId
+//   User      User     @relation(fields: [userId], references: [id])
+//   createdAt DateTime @default(now())
+// }
+
+enum Status {
+  TODO
+  DOING
+  DONE
+}
