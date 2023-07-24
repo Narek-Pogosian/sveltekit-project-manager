@@ -54,11 +54,20 @@
   method="post"
   class="mt-12"
   use:enhance={({ formData }) => {
+    isLoading = true;
     formData.set("email", "demo@demo.com");
     formData.set("password", "a1b2z9y8");
+
+    return async ({ update }) => {
+      isLoading = false;
+      update();
+    };
   }}
 >
-  <Button type="submit" color="alternative" class="font-bold uppercase w-full"
-    >Demo Account</Button
+  <Button
+    type="submit"
+    color="alternative"
+    class="font-bold uppercase w-full"
+    disabled={isLoading}>Demo Account</Button
   >
 </form>
