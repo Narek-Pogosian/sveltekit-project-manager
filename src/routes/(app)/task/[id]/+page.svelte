@@ -4,11 +4,14 @@
   import type { PageServerData } from "./$types";
   import { enhance } from "$app/forms";
   import EditTask from "$lib/components/modals/EditTask.svelte";
+  import toast from "svelte-french-toast";
+  import LoaderIcon from "$lib/icons/LoaderIcon.svelte";
 
   export let data: PageServerData;
   $: task = data.task;
 
   let selectedStatus = task?.status;
+  let isUpdating = false;
 </script>
 
 <svelte:head>
@@ -55,7 +58,21 @@
             action="?/updateStatus&taskId={task.id}"
             method="post"
             class="grid gap-3"
-            use:enhance
+            use:enhance={() => {
+              isUpdating = true;
+              return async ({ update, result }) => {
+                isUpdating = false;
+
+                if (result.type == "success") {
+                  toast.success("Status updated successfully");
+                }
+
+                if (result.type == "failure") {
+                  toast.error("Something went wrong");
+                }
+                update();
+              };
+            }}
           >
             <Select bind:value={selectedStatus} name="status">
               <option value="TODO" selected={task.status === "TODO"}
@@ -68,8 +85,12 @@
                 >Done</option
               >
             </Select>
-            <Button type="submit" disabled={selectedStatus === task.status}
-              >Update</Button
+            <Button
+              type="submit"
+              disabled={selectedStatus === task.status || isUpdating}
+              >{#if isUpdating}
+                <LoaderIcon />
+              {/if} Update</Button
             >
           </form>
         </Card>

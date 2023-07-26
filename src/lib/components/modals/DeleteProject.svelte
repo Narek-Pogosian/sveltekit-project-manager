@@ -2,7 +2,9 @@
   import { enhance } from "$app/forms";
   import { Button, Modal } from "flowbite-svelte";
   import toast from "svelte-french-toast";
+  import LoadingButton from "../LoadingButton.svelte";
   let popupModal = false;
+  let isSubmitting = false;
 
   export let id: string;
 </script>
@@ -35,28 +37,35 @@
       Are you sure you want to delete this project?
     </h3>
     <div class="flex justify-center gap-4">
-      <Button color="alternative" on:click={() => (popupModal = false)}
-        >No, cancel</Button
+      <Button
+        color="alternative"
+        on:click={() => (popupModal = false)}
+        disabled={isSubmitting}>No, cancel</Button
       >
 
       <form
         action="?/deleteProject&projectId={id}"
         method="post"
         use:enhance={() => {
+          isSubmitting = true;
+
           return async ({ update, result }) => {
-            console.log(result);
             if (result.type == "failure") {
               toast.error(String(result.data?.message));
-              popupModal = false;
             }
             if (result.type == "redirect") {
               toast.success("Project deleted successfully.");
             }
+
+            popupModal = false;
+            isSubmitting = false;
             update();
           };
         }}
       >
-        <Button color="red" class="mr-2" type="submit">Yes, I'm sure</Button>
+        <LoadingButton color="red" class="mr-2" isLoading={isSubmitting}
+          >Yes, I'm sure</LoadingButton
+        >
       </form>
     </div>
   </div>

@@ -1,5 +1,6 @@
 <script lang="ts">
   import { enhance } from "$app/forms";
+  import LoadingButton from "$lib/components/LoadingButton.svelte";
   import type { ActionData } from "./$types";
   import { Input, Alert, Button } from "flowbite-svelte";
 
@@ -54,9 +55,10 @@
     </Alert>
   {/if}
 
-  <Button class="font-bold uppercase" type="submit" disabled={isLoading}
-    >Register</Button
+  <LoadingButton class="font-bold uppercase" {isLoading} color="primary"
+    >Register</LoadingButton
   >
+
   <div class="text-sm text-center">
     Already registered? <a
       href="/login"

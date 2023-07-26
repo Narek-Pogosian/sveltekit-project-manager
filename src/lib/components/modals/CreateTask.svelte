@@ -3,6 +3,7 @@
   import { enhance } from "$app/forms";
   import toast from "svelte-french-toast";
   import TaskForm from "../TaskForm.svelte";
+  import LoadingButton from "../LoadingButton.svelte";
 
   export let projectId: string;
 
@@ -30,6 +31,7 @@
     method="post"
     use:enhance={() => {
       isSubmitting = true;
+
       return async ({ update, result }) => {
         formModal = false;
         isSubmitting = false;
@@ -51,9 +53,11 @@
       <Button
         on:click={() => (formModal = false)}
         color="alternative"
-        type="button">Cancel</Button
+        type="button"
+        disabled={isSubmitting}>Cancel</Button
       >
-      <Button type="submit" disabled={isSubmitting}>Add</Button>
+      <LoadingButton isLoading={isSubmitting} color="primary">Add</LoadingButton
+      >
     </div>
   </form></Modal
 >

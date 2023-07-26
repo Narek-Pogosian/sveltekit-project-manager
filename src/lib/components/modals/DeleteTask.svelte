@@ -2,16 +2,18 @@
   import { enhance } from "$app/forms";
   import { Button, Modal } from "flowbite-svelte";
   import toast from "svelte-french-toast";
-  let popupModal = false;
+  import LoadingButton from "../LoadingButton.svelte";
 
-  export let buttonSize: "xs" | "sm" | "md";
   export let id: string;
+
+  let popupModal = false;
+  let isSubmitting = false;
 </script>
 
 <Button
   on:click={() => (popupModal = true)}
   class="h-fit"
-  size={buttonSize}
+  size="xs"
   color="red"
   outline>Delete</Button
 >
@@ -36,28 +38,36 @@
       Are you sure you want to delete this Task?
     </h3>
     <div class="flex justify-center gap-4">
-      <Button color="alternative" on:click={() => (popupModal = false)}
-        >No, cancel</Button
+      <Button
+        color="alternative"
+        disabled={isSubmitting}
+        on:click={() => (popupModal = false)}>No, cancel</Button
       >
 
       <form
         action="?/deleteTask&taskId={id}"
         method="post"
         use:enhance={() => {
+          isSubmitting = true;
+
           return async ({ update, result }) => {
             if (result.type == "failure") {
               toast.error(String(result.data?.message));
-              popupModal = false;
             }
             if (result.type == "success") {
               toast.success("Task deleted successfully.");
-              popupModal = false;
             }
+
+            isSubmitting = false;
+            popupModal = false;
+
             update();
           };
         }}
       >
-        <Button color="red" class="mr-2" type="submit">Yes, I'm sure</Button>
+        <LoadingButton color="red" class="mr-2" isLoading={isSubmitting}
+          >Yes, I'm sure</LoadingButton
+        >
       </form>
     </div>
   </div>

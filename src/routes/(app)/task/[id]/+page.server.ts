@@ -83,6 +83,5 @@ export const actions: Actions = {
     }
 
     throw redirect(303, `/project/${projectId}`);
-    return { success: true, message: "Task deleted successfully" };
   },
 };

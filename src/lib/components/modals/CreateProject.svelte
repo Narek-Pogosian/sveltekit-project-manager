@@ -1,9 +1,9 @@
 <script lang="ts">
   import { enhance } from "$app/forms";
-  import { goto } from "$app/navigation";
   import PlusIcon from "$lib/icons/PlusIcon.svelte";
-  import { Input, Button, Modal, Alert } from "flowbite-svelte";
+  import { Input, Button, Modal } from "flowbite-svelte";
   import toast from "svelte-french-toast";
+  import LoadingButton from "../LoadingButton.svelte";
 
   let formModal = false;
   let isSubmitting = false;
@@ -59,8 +59,8 @@
         on:click={() => (formModal = false)}
         disabled={isSubmitting}>Cancel</Button
       >
-      <Button color="primary" type="submit" size="sm" disabled={isSubmitting}
-        >Create</Button
+      <LoadingButton color="primary" size="sm" isLoading={isSubmitting}
+        >Create</LoadingButton
       >
     </div>
   </form>

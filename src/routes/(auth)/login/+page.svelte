@@ -1,5 +1,7 @@
 <script lang="ts">
   import { enhance } from "$app/forms";
+  import LoadingButton from "$lib/components/LoadingButton.svelte";
+  import LoaderIcon from "$lib/icons/LoaderIcon.svelte";
   import type { ActionData } from "./$types";
 
   import { Input, Alert, Button } from "flowbite-svelte";
@@ -36,9 +38,10 @@
     </Alert>
   {/if}
 
-  <Button class="font-bold uppercase" type="submit" disabled={isLoading}
-    >Login</Button
+  <LoadingButton {isLoading} class="font-bold uppercase" color="primary"
+    >Login</LoadingButton
   >
+
   <div class="text-sm text-center">
     Dont have an account? <a
       href="/register"
@@ -64,10 +67,9 @@
     };
   }}
 >
-  <Button
-    type="submit"
+  <LoadingButton
     color="alternative"
-    class="font-bold uppercase w-full"
-    disabled={isLoading}>Demo Account</Button
+    {isLoading}
+    class="font-bold uppercase w-full">Demo Account</LoadingButton
   >
 </form>

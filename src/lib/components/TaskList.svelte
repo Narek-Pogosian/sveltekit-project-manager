@@ -108,7 +108,7 @@
             ></TableBodyCell
           >
           <TableBodyCell tdClass="p-0">
-            <DeleteTask id={task.id} buttonSize="xs" />
+            <DeleteTask id={task.id} />
           </TableBodyCell>
         </TableBodyRow>
       {/each}

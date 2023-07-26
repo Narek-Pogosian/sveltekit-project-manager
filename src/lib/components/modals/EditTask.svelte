@@ -4,6 +4,7 @@
   import TaskForm from "../TaskForm.svelte";
   import toast from "svelte-french-toast";
   import type { Task } from "@prisma/client";
+  import LoadingButton from "../LoadingButton.svelte";
 
   export let task: Task;
 
@@ -50,9 +51,12 @@
       <Button
         on:click={() => (formModal = false)}
         color="alternative"
-        type="button">Cancel</Button
+        type="button"
+        disabled={isSubmitting}>Cancel</Button
       >
-      <Button type="submit" disabled={isSubmitting}>Edit</Button>
+      <LoadingButton color="primary" isLoading={isSubmitting}
+        >Edit</LoadingButton
+      >
     </div>
   </form></Modal
 >
